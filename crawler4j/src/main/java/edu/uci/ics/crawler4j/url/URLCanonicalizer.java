@@ -17,6 +17,8 @@
 
 package edu.uci.ics.crawler4j.url;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -57,7 +59,7 @@ public class URLCanonicalizer {
 
         try {
             URL canonicalURL =
-                new URL(UrlResolver.resolveUrl((context == null) ? "" : context, href));
+                Urls.create(UrlResolver.resolveUrl((context == null) ? "" : context, href), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
 
             String host = canonicalURL.getHost().toLowerCase();
             if (Objects.equals(host, "")) {
@@ -110,7 +112,7 @@ public class URLCanonicalizer {
             String protocol = canonicalURL.getProtocol().toLowerCase();
             String pathAndQueryString = normalizePath(path) + queryString;
 
-            URL result = new URL(protocol, host, port, pathAndQueryString);
+            URL result = Urls.create(protocol, host, port, pathAndQueryString, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
             return result.toExternalForm();
 
         } catch (MalformedURLException | URISyntaxException ex) {

@@ -1,5 +1,7 @@
 package edu.uci.ics.crawler4j.url;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,7 +36,7 @@ public class TLDList {
             InputStream stream;
             String filename = config.getPublicSuffixLocalFile();
             if (filename == null) {
-                URL url = new URL(config.getPublicSuffixSourceUrl());
+                URL url = Urls.create(config.getPublicSuffixSourceUrl(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
                 stream = url.openStream();
             } else {
                 stream = new FileInputStream(filename);
