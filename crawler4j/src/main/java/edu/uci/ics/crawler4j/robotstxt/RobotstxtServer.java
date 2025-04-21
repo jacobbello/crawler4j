@@ -15,6 +15,8 @@
 
 package edu.uci.ics.crawler4j.robotstxt;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.SocketException;
@@ -79,7 +81,7 @@ public class RobotstxtServer {
             return true;
         }
         try {
-            URL url = new URL(webURL.getURL());
+            URL url = Urls.create(webURL.getURL(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
             String host = getHost(url);
             String path = url.getPath();
 
