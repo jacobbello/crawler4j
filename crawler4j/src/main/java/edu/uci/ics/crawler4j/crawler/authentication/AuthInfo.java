@@ -1,5 +1,7 @@
 package edu.uci.ics.crawler4j.crawler.authentication;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -48,7 +50,7 @@ public abstract class AuthInfo {
             throws MalformedURLException {
         this.authenticationType = authenticationType;
         this.httpMethod = httpMethod;
-        URL url = new URL(loginUrl);
+        URL url = Urls.create(loginUrl, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         this.protocol = url.getProtocol();
         this.host = url.getHost();
         this.port =
